@@ -1,3 +1,15 @@
+const loadButton = document.getElementById("load");
+loadButton.onclick = function () {
+  const req = new XMLHttpRequest();
+  req.open("GET", "/api/products");
+  req.onload = function () {
+    if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+      const data = JSON.parse(req.response);
+      addList({ data });
+    }
+  };
+  req.send();
+};
 
 function addList({ data }) {
   resetContentArea();
