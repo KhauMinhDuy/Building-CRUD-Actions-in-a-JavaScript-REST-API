@@ -16,7 +16,12 @@ module.exports = function (db) {
     .route("/products/:id")
     .get((req, res, next) => {
       const id = req.params.id;
-      res.send(db.get("products").find({ id: id }).value());
+      const value = db.get("products").find({ id: id }).value();
+      if (value) {
+        res.send(value);
+      } else {
+        res.status(404).send();
+      }
     })
     .patch((req, res, next) => {
       const id = req.params.id;

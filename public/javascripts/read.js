@@ -1,14 +1,28 @@
 const loadButton = document.getElementById("load");
 loadButton.onclick = function () {
-  const req = new XMLHttpRequest();
-  req.open("GET", "/api/products");
-  req.onload = function () {
-    if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
-      const data = JSON.parse(req.response);
-      addList({ data });
-    }
-  };
-  req.send();
+  // const req = new XMLHttpRequest();
+  // req.open("GET", "/api/products");
+  // req.onload = function () {
+  //   if (req.readyState === XMLHttpRequest.DONE && req.status === 200) {
+  //     const data = JSON.parse(req.response);
+  //     addList({ data });
+  //   }
+  // };
+  // req.send();
+
+  const value = document.getElementById("product-id").value;
+  if (value === "") {
+    axios.get("/api/products").then(addList);
+  } else {
+    axios
+      .get(`/api/products/${value}`)
+      .then(addSingle)
+      .catch((err) => {
+        if (err.response.status === 404) {
+          notFound();
+        }
+      });
+  }
 };
 
 function addList({ data }) {
